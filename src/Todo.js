@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 // pull out the task and removeTodo function from props
 const Todo = ({ task, removeTodo }) => (
