@@ -6,6 +6,8 @@ import App from './App';
 import { createStore } from 'redux';
 import rootReducer from './rootReducer';
 import { Provider } from 'react-redux';
+// react router
+import { BrowserRouter } from 'react-router-dom';
 
 // Create store from rootReducer file and enable redux devtools
 const store = createStore(
@@ -17,7 +19,10 @@ ReactDOM.render(
   <React.StrictMode>
     {/* Remember to wrap App in <Provider> tag and pass in store variable as prop */}
     <Provider store={store}>
-      <App />
+      {/* Browser router goes inside of provider */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

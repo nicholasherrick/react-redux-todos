@@ -1,39 +1,22 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
+import NewTodoForm from './NewTodoForm';
 // Import this to connect react to redux
 import { connect } from 'react-redux';
 // Import our dispatch function actions
 import { addTodo, removeTodo } from './actionCreators';
+import { Route } from 'react-router-dom';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      task: '',
-    };
     // Important: dont forget to bind all our methods to keyword this
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.removeTodo = this.removeTodo.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    //   We can use this to dispatch the add todo action
-    // this.props.dispatch({
-    //   type: 'ADD_TODO',
-    //   task: this.state.task,
-    // });
-    // But we'll just use our imported dispatch action passing in our form entry from the react state
-    this.props.addTodo(this.state.task);
-    // Reset form
-    e.target.reset();
+  // handles the add todo action coming from the form component
+  handleAdd(val) {
+    this.props.addTodo(val);
   }
 
   removeTodo(id) {
@@ -59,18 +42,16 @@ class TodoList extends Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor='task'>Task </label>
-          <input
-            type='text'
-            name='task'
-            id='task'
-            onChange={this.handleChange}
-          />
-          <button>Add a Todo</button>
-        </form>
-
-        <ul>{todos}</ul>
+        {/* When we go to /todos/new render the NewTodoForm component */}
+        <Route
+          path='/todos/new'
+          component={(props) => (
+            // Remember to pass in props
+            <NewTodoForm {...props} handleSubmit={this.handleAdd} />
+          )}
+        />
+        {/* Whenever we go the path /todos, make react render all the todos */}
+        <Route exact path='/todos' component={() => <div>{todos}</div>} />
       </div>
     );
   }
