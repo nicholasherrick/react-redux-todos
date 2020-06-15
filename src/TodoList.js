@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Todo from './Todo';
 // Import this to connect react to redux
 import { connect } from 'react-redux';
+// Import our dispatch function actions
+import { addTodo, removeTodo } from './actionCreators';
 
 class TodoList extends Component {
   constructor(props) {
@@ -23,21 +25,25 @@ class TodoList extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    //   Use this to dispatch the add todo action
-    this.props.dispatch({
-      type: 'ADD_TODO',
-      task: this.state.task,
-    });
+    //   We can use this to dispatch the add todo action
+    // this.props.dispatch({
+    //   type: 'ADD_TODO',
+    //   task: this.state.task,
+    // });
+    // But we'll just use our imported dispatch action passing in our form entry from the react state
+    this.props.addTodo(this.state.task);
     // Reset form
     e.target.reset();
   }
 
   removeTodo(id) {
-    //   Use this to dispatch the remove todo action, remember to pass in the id
-    this.props.dispatch({
-      type: 'REMOVE_TODO',
-      id,
-    });
+    //   We can use this to dispatch the remove todo action, remember to pass in the id
+    // this.props.dispatch({
+    //   type: 'REMOVE_TODO',
+    //   id,
+    // });
+    // But we'll just use our imported dispatch action passing in id
+    this.props.removeTodo(id);
   }
 
   render() {
@@ -79,5 +85,17 @@ function mapStateToProps(reduxState) {
   };
 }
 
-// must export with connect method, passing in mapStateToProps and returning TodoList function
-export default connect(mapStateToProps)(TodoList);
+// Better way to dispatch actions than using this.props.dispatch, but we will still just import our dispatch action functions from the actionCreators.js file
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     addTodo: function (task) {
+//       dispatch({
+//         type: 'ADD_TODO',
+//         task,
+//       });
+//     },
+//   };
+// }
+
+// must export with connect method, passing in mapStateToProps, our dispatch action functions (sometimes done with mapDispatchToProps) and returning TodoList function
+export default connect(mapStateToProps, { addTodo, removeTodo })(TodoList);
