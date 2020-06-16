@@ -12,7 +12,7 @@ function App() {
         <Link to='/todos'>See my todos!</Link>
       </p>
       <p>
-        <Link to='/todos/new'>Add a todos</Link>
+        <Link to='/todos/new'>Add a todo!</Link>
       </p>
       <Route path='/todos' component={TodoList} />
       {/* Render so we can redirect */}

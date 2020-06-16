@@ -4,7 +4,7 @@ import NewTodoForm from './NewTodoForm';
 // Import this to connect react to redux
 import { connect } from 'react-redux';
 // Import our dispatch function actions
-import { addTodo, removeTodo } from './actionCreators';
+import { getTodos, addTodo, removeTodo } from './actionCreators';
 import { Route } from 'react-router-dom';
 
 class TodoList extends Component {
@@ -12,6 +12,11 @@ class TodoList extends Component {
     super(props);
     // Important: dont forget to bind all our methods to keyword this
     this.handleAdd = this.handleAdd.bind(this);
+  }
+
+  // Load in todos after components render
+  componentDidMount() {
+    this.props.getTodos();
   }
 
   // handles the add todo action coming from the form component
@@ -31,12 +36,12 @@ class TodoList extends Component {
 
   render() {
     //   Now we can access state that get passed in using this.props and map over the todos grabbing the value of each one with val.task
-    let todos = this.props.todos.map((val, index) => (
+    let todos = this.props.todos.map((val) => (
       <Todo
         // We also pass the removeTodo function into each Todo and .bind it with the correct id (val.id) and remember to pass in keyword this
-        removeTodo={this.removeTodo.bind(this, val.id)}
+        removeTodo={this.removeTodo.bind(this, val._id)}
         task={val.task}
-        key={index}
+        key={val._id}
       />
     ));
 
@@ -79,4 +84,6 @@ function mapStateToProps(reduxState) {
 // }
 
 // must export with connect method, passing in mapStateToProps, our dispatch action functions (sometimes done with mapDispatchToProps) and returning TodoList function
-export default connect(mapStateToProps, { addTodo, removeTodo })(TodoList);
+export default connect(mapStateToProps, { getTodos, addTodo, removeTodo })(
+  TodoList
+);
